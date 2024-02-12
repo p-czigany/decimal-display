@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 public class DisplayUtil {
   public static void main(String[] args) {
@@ -42,5 +43,13 @@ public class DisplayUtil {
     } catch (IOException e) {
       System.err.println("Error reading from source file: " + e.getMessage());
     }
+  }
+
+  public static String print(BigDecimal number) {
+    return number.stripTrailingZeros().toString().replace(".", ",");
+  }
+
+  public static String convert(String numberString) {
+    return print(new BigDecimal(numberString.replace(",", ".")));
   }
 }

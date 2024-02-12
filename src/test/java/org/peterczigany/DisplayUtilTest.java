@@ -71,4 +71,9 @@ class DisplayUtilTest {
   void convert_scientific_comma() {
     assertEquals("5312", DisplayUtil.convert("5,312E+03"));
   }
+
+  @Test
+  void very_small() {
+    assertEquals("0,000000005312", DisplayUtil.convert("0,000000005312"));
+  }
 }

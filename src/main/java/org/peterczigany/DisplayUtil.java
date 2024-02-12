@@ -27,13 +27,13 @@ public class DisplayUtil {
       if (targetFilePath == null) {
         String line;
         while ((line = reader.readLine()) != null) {
-          System.out.println(line);
+          System.out.println(convert(line));
         }
       } else {
         try (FileWriter writer = new FileWriter(targetFilePath)) {
           String line;
           while ((line = reader.readLine()) != null) {
-            writer.write(line + "\n");
+            writer.write(convert(line) + "\n");
           }
           System.out.println("File copied successfully to " + targetFilePath);
         } catch (IOException e) {
@@ -46,7 +46,7 @@ public class DisplayUtil {
   }
 
   public static String print(BigDecimal number) {
-    return number.stripTrailingZeros().toString().replace(".", ",");
+    return number.stripTrailingZeros().toPlainString().replace(".", ",");
   }
 
   public static String convert(String numberString) {

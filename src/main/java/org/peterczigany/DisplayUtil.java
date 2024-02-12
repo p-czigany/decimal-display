@@ -1,47 +1,50 @@
 package org.peterczigany;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 public class DisplayUtil {
   public static void main(String[] args) {
-    // Check if proper arguments are provided
     if (args.length < 1 || args.length > 2) {
-      System.out.println("Usage: java CommandLineFileCopy <sourceFilePath> [<targetFilePath>]");
+      System.out.println("Usage: java DisplayUtil <sourceFilePath> [<targetFilePath>]");
       return;
     }
 
-    String sourceFilePath = args[0];
-    String targetFilePath = null;
-
-    // If a second argument is provided, set targetFilePath
-    if (args.length == 2) {
-      targetFilePath = args[1];
-    }
-
-    // Read from source file and print to stdout or copy to target file
-    try (BufferedReader reader = new BufferedReader(new FileReader(sourceFilePath))) {
-      if (targetFilePath == null) {
-        String line;
-        while ((line = reader.readLine()) != null) {
-          System.out.println(convert(line));
-        }
+    try {
+      List<String> lines = readLines(args[0]);
+      if (args.length == 1) {
+        printToStdout(lines);
       } else {
-        try (FileWriter writer = new FileWriter(targetFilePath)) {
-          String line;
-          while ((line = reader.readLine()) != null) {
-            writer.write(convert(line) + "\n");
-          }
-          System.out.println("File copied successfully to " + targetFilePath);
+        try {
+          writeToFile(lines, args[1]);
         } catch (IOException e) {
           System.err.println("Error writing to target file: " + e.getMessage());
         }
       }
     } catch (IOException e) {
       System.err.println("Error reading from source file: " + e.getMessage());
+    }
+  }
+
+  private static List<String> readLines(String sourceFilePath) throws IOException {
+    try (BufferedReader reader = Files.newBufferedReader(Paths.get(sourceFilePath))) {
+      return reader.lines().map(DisplayUtil::convert).toList();
+    }
+  }
+
+  private static void printToStdout(List<String> lines) {
+    lines.forEach(System.out::println);
+  }
+
+  private static void writeToFile(List<String> lines, String targetFilePath) throws IOException {
+    try (FileWriter writer = new FileWriter(targetFilePath)) {
+      writer.write(String.join("\n", lines));
+      System.out.println("File copied successfully to " + targetFilePath);
     }
   }
 

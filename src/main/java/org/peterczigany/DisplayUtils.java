@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class DisplayUtil {
+public class DisplayUtils {
   public static void main(String[] args) {
     if (args.length < 1 || args.length > 2) {
       System.out.println("Usage: java DisplayUtil <sourceFilePath> [<targetFilePath>]");
@@ -33,7 +33,7 @@ public class DisplayUtil {
 
   private static List<String> readLines(String sourceFilePath) throws IOException {
     try (BufferedReader reader = Files.newBufferedReader(Paths.get(sourceFilePath))) {
-      return reader.lines().map(DisplayUtil::convert).toList();
+      return reader.lines().map(DisplayUtils::convert).toList();
     }
   }
 
